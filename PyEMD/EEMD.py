@@ -173,14 +173,21 @@ class EEMD:
         # For trial number of iterations perform EMD on a signal
         # with added white noise
         all_IMFs = self.pool.map(self._trial_update, range(self.trials))
+        self.E_IMF = all_IMFs
 
-        max_imfNo = max([IMFs.shape[0] for IMFs in all_IMFs])
-
-        self.E_IMF = np.zeros((max_imfNo, N))
-        for IMFs in all_IMFs:
-            self.E_IMF[:IMFs.shape[0]] += IMFs
-
-        return self.E_IMF/self.trials
+        # (Edited by Ito)
+        # This method has been modified so that it returns a list of IMFs
+        # instead of the averaged IMFs.
+        # Hence, the following lines are commented out.
+        #max_imfNo = max([IMFs.shape[0] for IMFs in all_IMFs])
+        #
+        #self.E_IMF = np.zeros((max_imfNo, N))
+        #for IMFs in all_IMFs:
+        #    self.E_IMF[:IMFs.shape[0]] += IMFs
+        #
+        #return self.E_IMF/self.trials
+        
+        return self.E_IMF
 
     def _trial_update(self, trial):
         # Generate noise
